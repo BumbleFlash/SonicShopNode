@@ -6,7 +6,11 @@ var http= require("http").Server(app);
 var login=require('./login');
 var signup= require('./signup');
 var product=require('./product');
+var cart=require('./cart');
+var bodyparser=require("body-parser");
 var q;
+
+app.use(bodyparser.json());
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -33,6 +37,11 @@ app.get("/displayProducts",function(req,res){
 	    q=url.parse(req.url,true).query;
 	    product.product(q,con,res);
 });
+app.post("/cart",function(req,res)
+	{
+		console.log(req.body);
+		cart.cart(req.body,con,res);
+	});
 app.listen(8080,function()
 {
     console.log("Server listening");
